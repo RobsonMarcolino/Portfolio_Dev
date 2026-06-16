@@ -1,0 +1,421 @@
+@import "tailwindcss";
+
+/* ── Custom Theme ── */
+@theme {
+  --color-navy: #0F213E;
+  --color-navy-light: #162f56;
+  --color-navy-mid: #1d3d70;
+  --color-orange: #F15A24;
+  --color-orange-dim: rgba(241, 90, 36, 0.15);
+  --color-orange-glow: rgba(241, 90, 36, 0.4);
+  --color-slate: #64748B;
+  --color-off-white: #F4F4F6;
+  --color-glass: rgba(15, 33, 62, 0.04);
+  --color-glass-border: rgba(15, 33, 62, 0.08);
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ── Base Reset ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-off-white);
+  color: var(--color-navy);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Cursor ── */
+#cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--color-navy);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s, height 0.15s;
+}
+
+#cursor-ring {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-orange);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+  mix-blend-mode: multiply;
+}
+
+body.hovering #cursor-dot {
+  display: none;
+}
+
+body.hovering #cursor-ring {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(241, 90, 36, 0.2);
+  border-color: transparent;
+}
+
+/* ── Background Text ── */
+.bg-text-massive {
+  font-size: 20vw;
+  line-height: 0.85;
+  white-space: nowrap;
+  position: absolute;
+  z-index: 0;
+  opacity: 0.03;
+  font-family: var(--font-display);
+  pointer-events: none;
+  color: var(--color-cyan);
+}
+
+/* ── Skew Effect ── */
+.skew-text {
+  transform: skewX(-6deg);
+}
+
+/* ── Glassmorphism Card ── */
+.glass-card {
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: var(--color-cyan-dim);
+  background: rgba(6, 214, 160, 0.04);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px var(--color-cyan-dim);
+  transform: translateY(-6px);
+}
+
+/* ── Clip Paths ── */
+.clip-diagonal {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.clip-btn {
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+
+/* ── Section Divider ── */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-cyan-glow),
+    transparent
+  );
+  position: relative;
+  z-index: 10;
+}
+
+.section-divider::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--color-cyan);
+  box-shadow: 0 0 10px var(--color-cyan);
+}
+
+/* ── Carousel ── */
+.carousel-track-wrap {
+  overflow: hidden;
+  position: relative;
+  mask: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  -webkit-mask: linear-gradient(
+    90deg,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+.carousel-track {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  animation: scrollLeft 32s linear infinite;
+}
+
+.carousel-track.reverse {
+  animation: scrollRight 36s linear infinite;
+}
+
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scrollRight {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ── Skill Card ── */
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 22px 28px;
+  min-width: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.3s;
+  cursor: default;
+  flex-shrink: 0;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.skill-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-cyan);
+  box-shadow: 0 0 8px var(--color-cyan);
+  transition: width 0.4s;
+}
+
+.skill-card:hover::after {
+  width: 100%;
+}
+
+.skill-card:hover {
+  border-color: var(--color-cyan-dim);
+  background: rgba(6, 214, 160, 0.06);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 18px var(--color-cyan-dim);
+}
+
+/* ── Project Card ── */
+.proj-card {
+  border: 1px solid rgba(6, 214, 160, 0.12);
+  background: rgba(8, 8, 8, 0.6);
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.proj-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(6, 214, 160, 0.04) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.proj-card:hover {
+  border-color: rgba(6, 214, 160, 0.4);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px var(--color-cyan-dim);
+}
+
+.proj-card:hover::after {
+  opacity: 1;
+}
+
+/* ── Particles Canvas ── */
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.25;
+}
+
+/* ── Animations ── */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes scan {
+  0% {
+    top: -2px;
+    opacity: 0;
+  }
+  4% {
+    opacity: 0.35;
+  }
+  96% {
+    opacity: 0.35;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes scrollPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scaleY(0.4);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ── Reveal Animation ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(38px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Marquee ── */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 20s linear infinite;
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── Stat counter ── */
+.stat-box {
+  border: 1px solid var(--color-cyan-dim);
+  padding: 22px 14px;
+  text-align: center;
+  background: rgba(6, 214, 160, 0.02);
+  transition: all 0.3s;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.stat-box:hover {
+  border-color: var(--color-cyan-glow);
+  background: rgba(6, 214, 160, 0.06);
+  box-shadow: 0 0 24px var(--color-cyan-dim);
+}
+
+/* ── Hero Circle ── */
+.hero-circle {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(6, 214, 160, 0.15) 0%,
+    rgba(6, 214, 160, 0.05) 50%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: 0;
+  animation: floatY 6s ease-in-out infinite;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .bg-text-massive {
+    font-size: 30vw;
+  }
+
+  .hero-circle {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* ── Touch devices: show normal cursor ── */
+@media (hover: none) {
+  body {
+    cursor: auto;
+  }
+  #cursor-dot,
+  #cursor-ring {
+    display: none !important;
+  }
+}
